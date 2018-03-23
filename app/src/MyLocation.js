@@ -28,11 +28,16 @@ class MyLocation extends Component {
         this.getCurrentLocation(function(location) {  
             geocoder.geocode({ 'latLng': location}, function(results, status) {
                 if (status === google.maps.GeocoderStatus.OK) {
-                    console.log(results); //["locality", "political"]
-                    let address = results[3].formatted_address; 
-                    this.setState({
-                        address: address
-                    })
+                    for (let i = 0; i < results.length; i++) {
+                        if (arrayHasItem(results[i].types, "locality") &&
+                            arrayHasItem(results[i].types, "political")) {
+                            let address = results[i].formatted_address; 
+                            this.setState({
+                                address: address
+                            })
+                            break;
+                        }
+                    }
                 }
             }.bind(this))              
         }.bind(this))
@@ -50,6 +55,14 @@ class MyLocation extends Component {
                 }
             </div>                                            
         );
+    }
+}
+
+function arrayHasItem(array, item) {
+    for (var i = 0; i < array.length; i++) {
+        if (array[i] === item) {
+            return true;
+        }
     }
 }
 
