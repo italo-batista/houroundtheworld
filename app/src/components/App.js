@@ -1,8 +1,12 @@
 import React, { Component } from 'react';
-import logo from './../style/logo.svg';
-import './../style/App.css';
 import CurrentTime from './CurrentTime';
 import MyLocation from './MyLocation';
+import SearchBox from './SearchBox'
+
+import logo from './../style/logo.svg';
+import './../style/App.css';
+
+
 
 class App extends Component {
   render() {
@@ -13,74 +17,14 @@ class App extends Component {
         </header>
         <div className="row">
           <div className="col-md-4">
-            <ConvertTime />
-            <MyLocation />
+            <MyLocation />            
+            Your current time is <CurrentTime />
           </div>
           <div className="col-md-4">
-            <ConvertTime />
+            <SearchBox />
           </div>
         </div>
       </div>
-    );
-  }
-}
-
-class ConvertTime extends Component {
-  constructor(props) {
-    super(props);
-    this.state = { items: [], text: '' };
-    this.handleChange = this.handleChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
-  }
-
-  handleChange(e) {
-    this.setState({ text: e.target.value });
-  }
-
-  handleSubmit(e) {
-    e.preventDefault();
-    if (!this.state.text.length) {
-      return;
-    }
-    const newItem = {
-      text: this.state.text,
-      id: Date.now()
-    };
-    const items = this.state.items.slice(); 
-    this.setState({
-      items: items.concat(newItem),
-      text: ''
-    });
-  }
-
-  render() {
-    return (
-      <div>
-        Your current time is <CurrentTime />
-        <TodoList items={this.state.items} />
-        <form onSubmit={this.handleSubmit}>
-          <label htmlFor="new-todo" />
-          <input
-            id="new-todo"
-            onChange={this.handleChange}
-            value={this.state.text}
-          />
-        </form>
-      </div>
-    );
-  }  
-}
-
-class TodoList extends Component {
-  render() {
-    return (
-      <ul>
-        {this.props.items.map(
-          item => (
-            <li key={item.id}>{item.text}</li>
-          )
-        )}
-      </ul>
     );
   }
 }
