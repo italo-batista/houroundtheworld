@@ -7,7 +7,6 @@ import logo from './../style/logo.svg';
 import './../style/App.css';
 
 
-
 class App extends Component {
   render() {
     return (
