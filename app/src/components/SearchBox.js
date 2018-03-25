@@ -3,8 +3,6 @@ import Search from 'react-search-box';
 
 import './../style/Search.css';
 
-import cities from 'cities.json';
-
 var googleMapsClient = require('@google/maps').createClient({
   key: 'AIzaSyD9ghoDb2sS7KWSNMHve53qQ7qkjCa-8Pc'
 });
@@ -13,7 +11,7 @@ var googleMapsClient = require('@google/maps').createClient({
 class SearchBox extends Component {
   constructor(props) {
     super(props);
-    this.state = { data: [], loading: false, items: [] };
+    this.state = { data: [], items: [] };
     this.handleChange = this.handleChange.bind(this);
     this.getCurrentDateTime = this.getCurrentDateTime.bind(this);
     this.addNewItem = this.addNewItem.bind(this);
@@ -21,12 +19,7 @@ class SearchBox extends Component {
 
   componentDidMount() {
     this.setState({
-      loading: true
-    });
-
-    this.setState({
-      data: cities,
-      loading: false,
+      data: this.props.cities,
       item: []
     });
   }
@@ -73,12 +66,6 @@ class SearchBox extends Component {
   }
 
   render() {
-    if (this.state.loading) {
-      return (
-        <div className="app__loading">Loading...</div>
-      );
-    }
-
     return (
       <div>
         <SimpleList items={this.state.items} />

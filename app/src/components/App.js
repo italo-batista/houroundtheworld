@@ -5,6 +5,7 @@ import SearchBox from './SearchBox'
 
 import logo from './../style/logo.svg';
 import './../style/App.css';
+import cities from 'cities.json';
 
 class App extends Component {
   render() {
@@ -19,7 +20,9 @@ class App extends Component {
             Your current time is <CurrentTime />
           </div>
           <div className="col-md-4">
-            <SearchBox />
+            <SearchBox 
+              cities={cities}
+            />
           </div>
         </div>
       </div>
