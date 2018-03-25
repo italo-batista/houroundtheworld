@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-class CurrentTime extends Component {
+export class MyCurrentTime extends Component {
     constructor(props) {
       super(props);
       const now = new Date();
@@ -39,6 +39,45 @@ class CurrentTime extends Component {
     }
   }
 
-export default CurrentTime;
+export class LocalityCurrentTime extends Component {
+  constructor(props) {
+    super(props);
+    var targetDate = new Date()
+    var timestamp = targetDate.getTime() / 1000 + targetDate.getTimezoneOffset() * 60
+    var localdate = new Date(timestamp * 1000 + this.props.offsets)
+    this.state = { 
+      hours: localdate.getHours(),
+      minutes: localdate.getMinutes(),
+      seconds: localdate.getSeconds() 
+     };
+  }
 
-// https://maps.googleapis.com/maps/api/geocode/json?latlng=-7.257033,%20-35.920525&key=AIzaSyD9ghoDb2sS7KWSNMHve53qQ7qkjCa-8Pc
+  tick() {
+    var targetDate = new Date()
+    var timestamp = targetDate.getTime() / 1000 + targetDate.getTimezoneOffset() * 60
+    var localdate = new Date(timestamp * 1000 + this.props.offsets)
+    this.setState({ 
+      hours: localdate.getHours(),
+      minutes: localdate.getMinutes(),
+      seconds: localdate.getSeconds() 
+     });
+  }
+
+  componentDidMount() {
+    this.update = setInterval(() => this.tick(), 1000);
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.update);
+  }
+
+  render() {
+    return (
+      <div>
+        {this.state.hours}:
+        {this.state.minutes}:
+        {this.state.seconds}
+      </div>
+    );
+  }
+}

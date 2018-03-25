@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Search from 'react-search-box';
-
+import {LocalityCurrentTime} from './CurrentTime';
 import './../style/Search.css';
 
 var googleMapsClient = require('@google/maps').createClient({
@@ -11,17 +11,10 @@ var googleMapsClient = require('@google/maps').createClient({
 class SearchBox extends Component {
   constructor(props) {
     super(props);
-    this.state = { data: [], items: [] };
+    this.state = { data: this.props.cities, items: [] };
     this.handleChange = this.handleChange.bind(this);
     this.getCurrentDateTime = this.getCurrentDateTime.bind(this);
     this.addNewItem = this.addNewItem.bind(this);
-  }
-
-  componentDidMount() {
-    this.setState({
-      data: this.props.cities,
-      item: []
-    });
   }
 
   handleChange(searchedValue) {
@@ -46,18 +39,16 @@ class SearchBox extends Component {
     }, function (err, response) {
       if (!err) {
         var offsets = response.json.dstOffset * 1000 + response.json.rawOffset * 1000
-        var localdate = new Date(timestamp * 1000 + offsets)
-        var currentTime = localdate.toLocaleString()
-        this.addNewItem(currentTime, searchedValue)       
+        this.addNewItem(searchedValue, offsets)       
       }
     }.bind(this)); 
   }
 
-  addNewItem(currentTime, searchedValue) {
+  addNewItem(searchedValue, offsets) {
     const newItem = {
-      currentTime: currentTime,
-      text: searchedValue,
-      id: Date.now()
+      id: Date.now(),
+      offsets: offsets,    
+      text: searchedValue  
     };
     const items = this.state.items.slice();
     this.setState({
@@ -83,19 +74,19 @@ class SearchBox extends Component {
   }
 }
 
-class SimpleList extends Component {
-
-  render() {
+function SimpleList(props) {
     return (
       <div>
-        {this.props.items.map(
+        {props.items.map(
           item => (
-            <li key={item.id}>{item.text} - {item.currentTime}</li>
+              <div className="row" key={item.id}>
+                {item.text}
+                <LocalityCurrentTime 
+                  offsets={item.offsets}/> 
+              </div>                 
           )
         )}
       </div>
     );
-  }
 }
-
 export default SearchBox;
