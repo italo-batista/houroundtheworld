@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "@google/maps": "^0.4.5",
+    "cities.json": "^1.1.2",
     "react": "^16.2.0",
     "react-bootstrap": "^0.32.1",
     "react-dom": "^16.2.0",

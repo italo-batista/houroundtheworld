@@ -3,6 +3,8 @@ import Search from 'react-search-box';
 
 import './../style/Search.css';
 
+import cities from 'cities.json';
+
 var googleMapsClient = require('@google/maps').createClient({
   key: 'AIzaSyD9ghoDb2sS7KWSNMHve53qQ7qkjCa-8Pc'
 });
@@ -22,21 +24,8 @@ class SearchBox extends Component {
       loading: true
     });
 
-    // fetch('https://api.github.com/search/repositories?q=topic:ruby+topic:rails')
-    // .then(res => res.json())
-    // .then(data => {
-    //   this.setState({
-    //     data: data.items,
-    //     loading: false,
-    //     item: []
-    //   });
-    // })
-
-    var cg = { 'id': 0, 'full_name': 'Campina Grande' };
-    var tr = { 'id': 1, 'full_name': 'Toronto' };
-    var data = { 0: cg, 1: tr }
     this.setState({
-      data: data,
+      data: cities,
       loading: false,
       item: []
     });
@@ -99,7 +88,7 @@ class SearchBox extends Component {
             onChange={this.handleChange}
             placeholder="Search for a string..."
             class="search-class"
-            searchKey="full_name"
+            searchKey="name"
           />
         </div>
       </div>
