@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 
-const google = window.google;
-let geocoder = new google.maps.Geocoder();
+var googleMapsClient = require('@google/maps').createClient({
+    key: 'AIzaSyD9ghoDb2sS7KWSNMHve53qQ7qkjCa-8Pc'
+  });
+
 
 class MyLocation extends Component {
     constructor(props) {
@@ -18,7 +20,7 @@ class MyLocation extends Component {
             navigator.geolocation.getCurrentPosition(function(position) {
                     var lat = position.coords.latitude;
                     var lng = position.coords.longitude;
-                    var currLocation = new google.maps.LatLng(parseFloat(lat), parseFloat(lng))
+                    var currLocation = lat + ", " + lng;
                     callback(currLocation);
             });
         }
@@ -26,20 +28,19 @@ class MyLocation extends Component {
     
     getUserAdress() {
         this.getCurrentLocation(function(location) {  
-            geocoder.geocode({ 'latLng': location}, function(results, status) {
-                if (status === google.maps.GeocoderStatus.OK) {
-                    for (let i = 0; i < results.length; i++) {
-                        if (arrayHasItem(results[i].types, "locality") &&
-                            arrayHasItem(results[i].types, "political")) {
-                            let address = results[i].formatted_address; 
-                            this.setState({
-                                address: address
-                            })
-                            break;
-                        }
-                    }
+            
+            googleMapsClient.reverseGeocode({
+                latlng: location,
+                result_type: ["locality", "political"],
+                location_type: ['APPROXIMATE']
+            }, function (err, response) {
+                if (!err) {
+                    let address = response.json.results[0].formatted_address; 
+                    this.setState({
+                        address: address
+                    })
                 }
-            }.bind(this))              
+            }.bind(this));
         }.bind(this))
     }
 
@@ -55,14 +56,6 @@ class MyLocation extends Component {
                 }
             </div>                                            
         );
-    }
-}
-
-function arrayHasItem(array, item) {
-    for (var i = 0; i < array.length; i++) {
-        if (array[i] === item) {
-            return true;
-        }
     }
 }
 

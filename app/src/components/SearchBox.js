@@ -79,11 +79,11 @@ function SimpleList(props) {
       <div>
         {props.items.map(
           item => (
-              <div className="row" key={item.id}>
+              <li className="row" key={item.id}>
                 {item.text}
                 <LocalityCurrentTime 
                   offsets={item.offsets}/> 
-              </div>                 
+              </li>                 
           )
         )}
       </div>

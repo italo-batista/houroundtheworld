@@ -25,7 +25,3 @@ class Timezone extends Component {
         );
     }
 }
-
-
-// http://www.javascriptkit.com/dhtmltutors/local-time-google-time-zone-api.shtml
-
